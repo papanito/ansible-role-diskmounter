@@ -1,0 +1,6 @@
+---
+# vars file for cloudflared
+
+## values for credential files
+smb_credentials_filemode: 600
+smb_credentials_fileowner: root

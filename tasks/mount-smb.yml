@@ -1,0 +1,38 @@
+# https://linuxize.com/post/how-to-mount-cifs-windows-share-on-linux/
+- name: Set intial mount options
+  set_fact:
+    smb_options: "{{ item.value.options }}"
+- block:
+  - name: Set credentials values
+    set_fact:
+      smb_credentials_filename: "{{ smb_credentials_dir }}/{{ item.key }}"
+      smb_credentials_username: "{{ item.value.credentials.username }}"
+      smb_credentials_password: "{{ item.value.credentials.password }}"
+      smb_credentials_domain:   "{{ item.value.credentials.domain }}"
+  - name: Add credentials to mount options
+    set_fact:
+      smb_options: "{{ smb_options }},credentials={{ smb_credentials_filename }}"
+  - name: Create credentials file
+    template:
+      src: smb-credentials.j2
+      dest: "{{ smb_credentials_filename }}"
+      mode: "{{ smb_credentials_filemode }}"
+      owner: "{{ smb_credentials_fileowner }}"
+    become: yes
+  when: item.value.credentials is defined
+- name: "Mount {{ item.key }}: {{ item.value.src }} to {{ item.value.path }}"
+  mount:
+    path: "{{ item.value.path }}"
+    src: "{{ item.value.src }}"
+    fstype: cifs
+    opts: "{{ smb_options }}"
+    state: mounted
+  become: yes
+  when: item.value.mounted is undefined or item.value.mounted
+- name: "Unmount {{ item.key }}: {{ item.value.src }} from {{ item.value.path }}"
+  mount:
+    path: "{{ item.value.path }}"
+    src: "{{ item.value.src }}"
+    state: unmounted
+  become: yes
+  when: item.value.mounted is defined and not item.value.mounted

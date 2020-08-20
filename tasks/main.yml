@@ -1,0 +1,17 @@
+## nfs-utils 2.5.1-1 [installed]
+#    Support programs for Network File Systems
+#core/nfsidmap 2.5.1-1 [installed]
+#    Library to help mapping IDs, mainly for NFSv4
+#extra/gvfs-nfs
+- name: Mount smb shares
+  include_tasks: mount-smb.yml
+  with_dict: "{{ smb_shares }}"
+
+#   #//192.168.1.1/Elements /mnt/sunrise cifs file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000,sec=none,vers=1.0,nounix 0 0
+
+# - name: Unmount sunrise
+#   mount:
+#     path: /mnt/sunrise
+#     state: unmounted
+#   become: yes
+

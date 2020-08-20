@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  remote_user: root
+  vars:
+    smb_shares:
+  roles:
+    - ansible-role-disk-mounter
