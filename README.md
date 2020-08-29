@@ -20,21 +20,6 @@ none
 
 ## Role Variables
 
-smb_credentials_root
-
-
-
-smb_shares:
-  freenas:
-    path: /mnt/freenas
-    src: 10.0.0.20:/mnt/media
-    fstype: nfs
-    state: mounted
-  become: yesa
-
-
-
-
 ### General parameters
 
 These are all variables
@@ -42,6 +27,7 @@ These are all variables
 |Parameter|Description|Default Value|
 |---------|-----------|-------------|
 |`smb_shares`|Dictionary of smb (cifs) shares to mount, see [Parameters for `smb_shares`](#parameters-for-smb_shares)|-|
+|`smb_credentials_dir`|Directory where to put credentials file|`/etc`|
 
 #### Parameters for `smb_shares`
 
@@ -57,7 +43,6 @@ These are all variables
 |`credentials.username`|Username to connect to `src`, will be added to credentials file|-|
 |`credentials.password`|Password to connect to `src`, will be added to credentials file. I recommend to encrypt the password|-|
 |`credentials.domain`|Domain to connect to `src`, will be added to credentials file|-|
-|`smb_credentials_dir`|Directory where to put credentials file|`/etc`|
 
 `sharename` represent the key for each share at `smb_shares` i.e. for the example below we have `demo` and `freenas`
 
@@ -82,6 +67,10 @@ smb_shares:
       mounted: yes
 ```
 
+> **Remark**
+>
+> I recommend to use `ansible-vault` to encrypt `username` and `password`
+
 ## Dependencies
 
 none
@@ -94,10 +83,8 @@ The following example installs an ssh-tunnel for each `server`
 ---
 - hosts: localhost
   vars:
-    remote_user: "{{ localuser }}"
-    user: "{{ localuser }}"
     smb_shares:
-      demo: # share which uses no credentails
+      demo: # share which uses no credentials
         path: /mnt/demo
         src: //192.168.0.1/demo
         options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000,sec=none,vers=1.0,nounix
@@ -109,8 +96,8 @@ The following example installs an ssh-tunnel for each `server`
           username: usera
           passsword: MySmbPassword
           domain: domain
-  roles:
-    - core
+  roles:credentials
+    - papanito.diskmounter
 ```
 
 ## License
