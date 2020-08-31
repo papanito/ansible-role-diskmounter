@@ -56,12 +56,12 @@ smb_shares:
   demo: # share which uses no credentails
     path: /mnt/demo
     src: //192.168.0.1/demo
-    options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000,sec=none,vers=1.0,nounix
+    options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000
     mounted: no # will unmount
   freenas: # share with credentials
     path: /mnt/freenas
     src: //192.168.0.1/media
-    options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000,sec=none,vers=1.0,nounix
+    options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000
     credentials:
       username: usera
       passsword: MySmbPassword
@@ -89,11 +89,11 @@ The following example installs an ssh-tunnel for each `server`
       demo: # share which uses no credentials
         path: /mnt/demo
         src: //192.168.0.1/demo
-        options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000,sec=none,vers=1.0,nounix
+        options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000
       freenas: # share with credentials
         path: /mnt/freenas
         src: //192.168.0.1/media
-        options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000,sec=none,vers=1.0,nounix
+        options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000
         credentials:
           username: usera
           passsword: MySmbPassword
