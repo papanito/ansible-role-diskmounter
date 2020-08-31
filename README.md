@@ -1,4 +1,4 @@
-# Role "diskmounter"  <!-- omit in toc -->
+# Ansbile role "papanito.diskmounter"  <!-- omit in toc -->
 
 ![Ansible Role](https://img.shields.io/ansible/role/50326) ![Ansible Quality Score](https://img.shields.io/ansible/quality/50326) ![Ansible Role](https://img.shields.io/ansible/role/d/50326) ![GitHub issues](https://img.shields.io/github/issues/papanito/ansible-role-diskmounter) ![GitHub pull requests](https://img.shields.io/github/issues-pr/papanito/ansible-role-diskmounter) 
 
