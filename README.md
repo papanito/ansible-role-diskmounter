@@ -1,6 +1,6 @@
 # Ansbile role "papanito.diskmounter"  <!-- omit in toc -->
 
-![Ansible Role](https://img.shields.io/ansible/role/50326) ![Ansible Quality Score](https://img.shields.io/ansible/quality/50326) ![Ansible Role](https://img.shields.io/ansible/role/d/50326) ![GitHub issues](https://img.shields.io/github/issues/papanito/ansible-role-diskmounter) ![GitHub pull requests](https://img.shields.io/github/issues-pr/papanito/ansible-role-diskmounter) 
+[![Ansible Role](https://img.shields.io/ansible/role/50326)](https://galaxy.ansible.com/papanito/diskmounter) [![Ansible Quality Score](https://img.shields.io/ansible/quality/50326)](https://galaxy.ansible.com/papanito/diskmounter) [![Ansible Role](https://img.shields.io/ansible/role/d/50326)](https://galaxy.ansible.com/papanito/diskmounter) [![GitHub issues](https://img.shields.io/github/issues/papanito/ansible-role-diskmounter)](https://github.com/papanito/ansible-role-diskmounter/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/papanito/ansible-role-diskmounter)](https://github.com/papanito/ansible-role-diskmounter/pulls)
 
 - [Requirements](#requirements)
 - [Role Variables](#role-variables)
@@ -98,7 +98,8 @@ The following example installs an ssh-tunnel for each `server`
           username: usera
           passsword: MySmbPassword
           domain: domain
-  roles:credentials
+
+ roles:
     - papanito.diskmounter
 ```
 
