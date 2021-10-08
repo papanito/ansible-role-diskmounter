@@ -1,9 +1,11 @@
 # https://linuxize.com/post/how-to-mount-cifs-windows-share-on-linux/
 - name: Install cifs-utils
-  package: name={{ item }} state=latest # noqa 403
+  package: name={{ package }} state=latest # noqa 403
   become: true
-  with_items:
+  loop:
     - cifs-utils
+  loop_control:
+    loop_var: package
 - name: Set initial mount options
   set_fact:
     smb_options: "{{ item.value.options }}"
