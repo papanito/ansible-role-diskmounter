@@ -57,7 +57,9 @@ These are all variables
 |Parameter|Description|Default Value|
 |---------|-----------|-------------|
 |`path`|[Mandatory] Path to the mount point|-|
-|`src`|[Mandatory] Device to be mounted on `path`|-|
+|`host`|[Mandatory] Hostname to be mounted on `path`|-|
+|`target_path`|[Mandatory] Target path on `host`|-|
+|`user`|[Mandatory] User to connect to `host`|-|
 |`options`|Mount options (see fstab(5), or vfstab(4) on Solaris)|-|
 |`mounted`|Whether the share shall be mounted (`true`) or not (`false`)|`true`|
 

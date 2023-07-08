@@ -12,7 +12,7 @@
 - name: "Mount {{ item.key }}: {{ item.value.src }} to {{ item.value.path }}"
   mount:
     path: "{{ item.value.path }}"
-    src: "{{ item.value.src }}"
+    src: "{{ item.value.user }}@{{ item.value.host }}:{{ item.value.target_path}}"
     fstype: fuse.sshfs
     opts: "{{ sshfs_options }}"
     state: mounted
