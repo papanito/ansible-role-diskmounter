@@ -1,11 +1,11 @@
 ## nfs-utils 2.5.1-1 [installed]
 #    Support programs for Network File Systems
-#core/nfsidmap 2.5.1-1 [installed]
+# core/nfsidmap 2.5.1-1 [installed]
 #    Library to help mapping IDs, mainly for NFSv4
-#extra/gvfs-nfs
+# extra/gvfs-nfs
 - name: Mount smb shares
-  include_tasks: mount-smb.yml
+  ansible.builtin.include_tasks: mount-smb.yml
   with_dict: "{{ smb_shares }}"
 - name: Mount sshfs shares
-  include_tasks: mount-sshfs.yml
+  ansible.builtin.include_tasks: mount-sshfs.yml
   with_dict: "{{ sshfs_shares }}"

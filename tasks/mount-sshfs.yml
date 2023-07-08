@@ -1,15 +1,17 @@
 # https://linuxize.com/post/how-to-mount-cifs-windows-share-on-linux/
 - name: Install sshfs
-  package: name={{ package }} state=latest # noqa 403
+  ansible.builtin.package:
+    name: "{{ package }}"
+    state: latest
   become: true
   loop:
     - sshfs
   loop_control:
     loop_var: package
 - name: Set initial mount options
-  set_fact:
+  ansible.builtin.set_fact:
     sshfs_options: "{{ item.value.options }}"
-    sshfs_src: "{{ item.value.user }}@{{ item.value.host }}:{{ item.value.target_path}}"
+    sshfs_src: "{{ item.value.user }}@{{ item.value.host }}:{{ item.value.target_path }}"
 - name: Create folder {{ item.value.path }}"
   ansible.builtin.file:
     path: "{{ item.value.path }}"
@@ -17,7 +19,7 @@
     group: "{{ item.value.group | default(ansible_user) }}"
   become: true
 - name: "Mount {{ item.key }}: {{ sshfs_src }} to {{ item.value.path }}"
-  mount:
+  ansible.posix.mount:
     path: "{{ item.value.path }}"
     src: "{{ sshfs_src }}"
     fstype: fuse.sshfs
@@ -26,7 +28,7 @@
   become: true
   when: item.value.mounted is undefined or item.value.mounted
 - name: "Unmount {{ item.key }}: {{ item.value.src }} from {{ item.value.path }}"
-  mount:
+  ansible.posix.mount:
     path: "{{ item.value.path }}"
     src: "{{ item.value.src }}"
     state: unmounted

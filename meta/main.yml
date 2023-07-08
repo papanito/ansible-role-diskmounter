@@ -1,25 +1,27 @@
 galaxy_info:
   role_name: diskmounter
   author: Adrian Wyssmann
-  description: Role for simplified mounting of file shares.
+  namespace: papanito
+  description: Role for simplified mounting of file shares (smb, sshfs)
   company: wyssmann.com
-  issue_tracker_url: https://github.com/papanito/ansible-role-disk-mounter/issues
+  issue_tracker_url: https://github.com/papanito/ansible-role-diskmounter/issues
   license: Apache
-  min_ansible_version: 2.7
+  min_ansible_version: "2.7"
 
   platforms:
-  - name: EL
-    versions:
-    - all
-  - name: Ubuntu
-    versions:
-    - all
-  - name: Debian
-    versions:
-    - all
+    - name: EL
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
 
   galaxy_tags:
-  - networking
-  - smb
+    - networking
+    - smb
+    - sshfs
 
 dependencies: []

@@ -1,32 +1,35 @@
 # https://linuxize.com/post/how-to-mount-cifs-windows-share-on-linux/
 - name: Install cifs-utils
-  package: name={{ package }} state=latest # noqa 403
+  ansible.builtin.package:
+    name: "{{ package }}"
+    state: latest
   become: true
   loop:
     - cifs-utils
   loop_control:
     loop_var: package
 - name: Set initial mount options
-  set_fact:
+  ansible.builtin.set_fact:
     smb_options: "{{ item.value.options }}"
-- block:
-  - name: Set credentials values
-    set_fact:
-      smb_credentials_filename: "{{ smb_credentials_dir }}/{{ item.key }}"
-      smb_credentials_username: "{{ item.value.credentials.username }}"
-      smb_credentials_password: "{{ item.value.credentials.password }}"
-      smb_credentials_domain:   "{{ item.value.credentials.domain }}"
-  - name: Add credentials to mount options
-    set_fact:
-      smb_options: "{{ smb_options }},credentials={{ smb_credentials_filename }}"
-  - name: Create credentials file
-    template:
-      src: smb-credentials.j2
-      dest: "{{ smb_credentials_filename }}"
-      mode: "{{ smb_credentials_filemode }}"
-      owner: "{{ smb_credentials_fileowner }}"
-    become: true
+- name: Prepare smb credentials
   when: item.value.credentials is defined
+  block:
+    - name: Set credentials values
+      ansible.builtin.set_fact:
+        smb_credentials_filename: "{{ smb_credentials_dir }}/{{ item.key }}"
+        smb_credentials_username: "{{ item.value.credentials.username }}"
+        smb_credentials_password: "{{ item.value.credentials.password }}"
+        smb_credentials_domain: "{{ item.value.credentials.domain }}"
+    - name: Add credentials to mount options
+      ansible.builtin.set_fact:
+        smb_options: "{{ smb_options }},credentials={{ smb_credentials_filename }}"
+    - name: Create credentials file
+      ansible.builtin.template:
+        src: smb-credentials.j2
+        dest: "{{ smb_credentials_filename }}"
+        mode: "{{ smb_credentials_filemode }}"
+        owner: "{{ smb_credentials_fileowner }}"
+      become: true
 - name: Create folder {{ item.value.path }}"
   ansible.builtin.file:
     path: "{{ item.value.path }}"
@@ -34,7 +37,7 @@
     group: "{{ item.value.group | default(ansible_user) }}"
   become: true
 - name: "Mount {{ item.key }}: {{ item.value.src }} to {{ item.value.path }}"
-  mount:
+  ansible.posix.mount:
     path: "{{ item.value.path }}"
     src: "{{ item.value.src }}"
     fstype: cifs
@@ -43,7 +46,7 @@
   become: true
   when: item.value.mounted is undefined or item.value.mounted
 - name: "Unmount {{ item.key }}: {{ item.value.src }} from {{ item.value.path }}"
-  mount:
+  ansible.posix.mount:
     path: "{{ item.value.path }}"
     src: "{{ item.value.src }}"
     state: unmounted
