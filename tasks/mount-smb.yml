@@ -25,7 +25,7 @@
       dest: "{{ smb_credentials_filename }}"
       mode: "{{ smb_credentials_filemode }}"
       owner: "{{ smb_credentials_fileowner }}"
-    become: yes
+    become: true
   when: item.value.credentials is defined
 - name: "Mount {{ item.key }}: {{ item.value.src }} to {{ item.value.path }}"
   mount:
@@ -34,12 +34,12 @@
     fstype: cifs
     opts: "{{ smb_options }}"
     state: mounted
-  become: yes
+  become: true
   when: item.value.mounted is undefined or item.value.mounted
 - name: "Unmount {{ item.key }}: {{ item.value.src }} from {{ item.value.path }}"
   mount:
     path: "{{ item.value.path }}"
     src: "{{ item.value.src }}"
     state: unmounted
-  become: yes
+  become: true
   when: item.value.mounted is defined and not item.value.mounted
