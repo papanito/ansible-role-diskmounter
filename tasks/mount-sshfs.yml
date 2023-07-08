@@ -9,10 +9,17 @@
 - name: Set initial mount options
   set_fact:
     sshfs_options: "{{ item.value.options }}"
-- name: "Mount {{ item.key }}: {{ item.value.src }} to {{ item.value.path }}"
+    sshfs_src: "{{ item.value.user }}@{{ item.value.host }}:{{ item.value.target_path}}"
+- name: Create folder {{ item.value.path }}"
+  ansible.builtin.file:
+    path: "{{ item.value.path }}"
+    owner: "{{ item.value.owner | default(ansible_user) }}"
+    group: "{{ item.value.group | default(ansible_user) }}"
+  become: true
+- name: "Mount {{ item.key }}: {{ sshfs_src }} to {{ item.value.path }}"
   mount:
     path: "{{ item.value.path }}"
-    src: "{{ item.value.user }}@{{ item.value.host }}:{{ item.value.target_path}}"
+    src: "{{ sshfs_src }}"
     fstype: fuse.sshfs
     opts: "{{ sshfs_options }}"
     state: mounted

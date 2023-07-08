@@ -43,6 +43,8 @@ These are all variables
 |`src`|[Mandatory] Device to be mounted on `path`|-|
 |`options`|Mount options (see fstab(5), or vfstab(4) on Solaris)|-|
 |`mounted`|Whether the share shall be mounted (`true`) or not (`false`)|`true`|
+|`owner`| Owner of the `path`|`ansible_user`|
+|`group`| Group of the `path`|`ansible_user`|
 |`credentials`|If defined the role will add a credentials file at `/etc/sharename`. The role will aggregate the credential file to the `options` as `-o credentials=/etc/sharename`.|-|
 |`credentials.username`|Username to connect to `src`, will be added to credentials file|-|
 |`credentials.password`|Password to connect to `src`, will be added to credentials file. I recommend to encrypt the password|-|
@@ -60,6 +62,8 @@ These are all variables
 |`host`|[Mandatory] Hostname to be mounted on `path`|-|
 |`target_path`|[Mandatory] Target path on `host`|-|
 |`user`|[Mandatory] User to connect to `host`|-|
+|`owner`| Owner of the `path`|`ansible_user`|
+|`group`| Group of the `path`|`ansible_user`|
 |`options`|Mount options (see fstab(5), or vfstab(4) on Solaris)|-|
 |`mounted`|Whether the share shall be mounted (`true`) or not (`false`)|`true`|
 
@@ -104,6 +108,8 @@ The following example installs an ssh-tunnel for each `server`
         path: /mnt/demo
         src: //192.168.0.1/demo
         options: file_mode=0777,dir_mode=0777,rw,uid=1000,gid=1000
+        owner: papanito
+        group: papanito
       freenas: # share with credentials
         path: /mnt/freenas
         src: //192.168.0.1/media
@@ -112,6 +118,15 @@ The following example installs an ssh-tunnel for each `server`
           username: usera
           passsword: MySmbPassword
           domain: domain
+sshfs_shares:
+  yunohost:
+    path: /mnt/myhost
+    host: myhost
+    user: papanito
+    owner: papanito
+    group: papanito
+    target_path: /home/papanito
+    options: "noauto,x-systemd.automount,_netdev,reconnect,identityfile=/home/papanito/.ssh/id_rsa,allow_other,default_permissions"
 
  roles:
     - papanito.diskmounter
