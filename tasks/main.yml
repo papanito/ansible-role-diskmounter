@@ -6,3 +6,6 @@
 - name: Mount smb shares
   include_tasks: mount-smb.yml
   with_dict: "{{ smb_shares }}"
+- name: Mount sshfs shares
+  include_tasks: mount-sshfs.yml
+  with_dict: "{{ sshfs_shares }}"

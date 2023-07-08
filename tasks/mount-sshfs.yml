@@ -1,0 +1,27 @@
+# https://linuxize.com/post/how-to-mount-cifs-windows-share-on-linux/
+- name: Install sshfs
+  package: name={{ package }} state=latest # noqa 403
+  become: true
+  loop:
+    - sshfs
+  loop_control:
+    loop_var: package
+- name: Set initial mount options
+  set_fact:
+    sshfs_options: "{{ item.value.options }}"
+- name: "Mount {{ item.key }}: {{ item.value.src }} to {{ item.value.path }}"
+  mount:
+    path: "{{ item.value.path }}"
+    src: "{{ item.value.src }}"
+    fstype: fuse.sshfs
+    opts: "{{ sshfs_options }}"
+    state: mounted
+  become: true
+  when: item.value.mounted is undefined or item.value.mounted
+- name: "Unmount {{ item.key }}: {{ item.value.src }} from {{ item.value.path }}"
+  mount:
+    path: "{{ item.value.path }}"
+    src: "{{ item.value.src }}"
+    state: unmounted
+  become: true
+  when: item.value.mounted is defined and not item.value.mounted

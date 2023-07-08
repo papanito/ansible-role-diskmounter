@@ -6,6 +6,7 @@
 - [Role Variables](#role-variables)
   - [General parameters](#general-parameters)
     - [Parameters for `smb_shares`](#parameters-for-smb_shares)
+    - [Parameters for `sshfs_shares`](#parameters-for-sshfs_shares)
 - [Dependencies](#dependencies)
 - [Example Playbook](#example-playbook)
 - [License](#license)
@@ -30,6 +31,7 @@ These are all variables
 |---------|-----------|-------------|
 |`smb_shares`|Dictionary of smb (cifs) shares to mount, see [Parameters for `smb_shares`](#parameters-for-smb_shares)|-|
 |`smb_credentials_dir`|Directory where to put credentials file|`/etc`|
+|`sshfs_shares`|Dictionary of sshfsshares to mount, see [Parameters for `sshfs_shares`](#parameters-for-sshfs_shares)|-|
 
 #### Parameters for `smb_shares`
 
@@ -40,7 +42,7 @@ These are all variables
 |`path`|[Mandatory] Path to the mount point|-|
 |`src`|[Mandatory] Device to be mounted on `path`|-|
 |`options`|Mount options (see fstab(5), or vfstab(4) on Solaris)|-|
-|`mounted`|Whether the share shall be mounted (`yes`) or not (`no`)|`Yes`|
+|`mounted`|Whether the share shall be mounted (`true`) or not (`false`)|`true`|
 |`credentials`|If defined the role will add a credentials file at `/etc/sharename`. The role will aggregate the credential file to the `options` as `-o credentials=/etc/sharename`.|-|
 |`credentials.username`|Username to connect to `src`, will be added to credentials file|-|
 |`credentials.password`|Password to connect to `src`, will be added to credentials file. I recommend to encrypt the password|-|
@@ -48,6 +50,16 @@ These are all variables
 
 `sharename` represent the key for each share at `smb_shares` i.e. for the example below we have `demo` and `freenas`
 
+#### Parameters for `sshfs_shares`
+
+`sshfs_shares` are always mounted with [type `fuse.sshfs` and in state `mounted`](https://docs.ansible.com/ansible/latest/modules/mount_module.html). However there are some options to provide:
+
+|Parameter|Description|Default Value|
+|---------|-----------|-------------|
+|`path`|[Mandatory] Path to the mount point|-|
+|`src`|[Mandatory] Device to be mounted on `path`|-|
+|`options`|Mount options (see fstab(5), or vfstab(4) on Solaris)|-|
+|`mounted`|Whether the share shall be mounted (`true`) or not (`false`)|`true`|
 
 **Examples:**
 
@@ -66,7 +78,7 @@ smb_shares:
       username: usera
       passsword: MySmbPassword
       domain: domain
-      mounted: yes
+      mounted: true
 ```
 
 > **Remark**
